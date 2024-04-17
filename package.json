@@ -9,6 +9,10 @@
   "keywords": [],
   "author": "liuqihui",
   "license": "ISC",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/Ape-Alive/takeoff-vue.git"
+  },
   "bugs": {
     "url": ""
   },
