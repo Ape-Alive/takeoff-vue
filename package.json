@@ -1,0 +1,26 @@
+{
+  "name": "takeoff-vue",
+  "version": "1.0.0",
+  "description": "The UI component of Vue2",
+  "main": "src/main",
+  "scripts": {
+    "build": "tsc && webpack --mode production && sass ./src/scss/index.scss ./dist/index.css"
+  },
+  "keywords": [],
+  "author": "liuqihui",
+  "license": "ISC",
+  "bugs": {
+    "url": ""
+  },
+  "homepage": "",
+  "devDependencies": {
+    "@babel/types": "^7.19.3",
+    "vue": "^2.6.14",
+    "webpack": "^5.74.0",
+    "webpack-cli": "^4.10.0"
+  },
+  "dependencies": {
+    "html2canvas": "^1.4.1",
+    "typescript": "^5.4.5"
+  }
+}
