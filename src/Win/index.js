@@ -208,10 +208,21 @@ var Win = (function () {
         else {
             this.__status = "mini";
         }
-        this.appendMiniList();
         requestAnimationFrame(function () {
             if (_this.callbacks.mini) {
                 _this.callbacks.mini(_this);
+            }
+        });
+        return this;
+    };
+    Win.prototype.toMini = function () {
+        var _this = this;
+        if (this.__status !== "mini") {
+            this.__status = "mini";
+        }
+        requestAnimationFrame(function () {
+            if (_this.callbacks.minifn) {
+                _this.callbacks.minifn(_this);
             }
         });
         return this;
@@ -234,6 +245,12 @@ var Win = (function () {
     Win.prototype.onmini = function (fn) {
         if (typeof fn === "function") {
             this.callbacks.mini = fn;
+        }
+        return this;
+    };
+    Win.prototype.minied = function (fn) {
+        if (typeof fn === "function") {
+            this.callbacks.minifn = fn;
         }
         return this;
     };

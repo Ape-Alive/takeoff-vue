@@ -2,7 +2,7 @@
 
 # 更新
 
-## 1.0.0
+## 1.2.0
 
 # VUE2 使用
 
@@ -71,19 +71,24 @@ app.onmax(()=>{
   // 窗口最大化切换回调
 })
 app.onmini(()=>{
-  // 窗口最小化切换回调
+  // 窗口最小化切换回调（setMini）
 })
 app.onclose(()=>{
   // 窗口关闭回调
 })
+app.minied(()=>{
+  //窗口变小的回调（toMini）
+})
 // 窗口置顶
 app.setTop();
-// 切换最小化
+// 切换最小化再次点击还原之前的状态
 app.setMini();
-// 切换最大化
+// 切换最大化再次点击还原之前的状态
 app.setMax();
 // 关闭窗口
 app.close();
+//变到最小再次点击不会还原之前状态
+app.toMini()
 ```
 
 #### options
@@ -91,6 +96,7 @@ app.close();
 | key       | 必须 | 类型                    | 描述                                  | 默认值                  |
 | --------- | ---- | ----------------------- | ------------------------------------- | ----------------------- |
 | url       | 是   | string                  | 要打开的网页地址，与`component`二选一 | "http://www.bauble.vip" |
+| toTop     | 否   | Number                  | 打开窗口顶部离窗口的位置              | undefined               |
 | component | 是   | DefineComponent         | 要打开的 VUE 组件，与`url`二选一      | undefined               |
 | parentId  | 否   | string                  | 父窗口 ID                             | undefined               |
 | id        | 否   | string                  | 要打开的窗口 ID                       | 随机分配 ID             |

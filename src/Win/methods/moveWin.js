@@ -20,8 +20,8 @@ export default function (win, status, winEl, endCallback) {
         Win.Shade.onmousemove = function (shade) {
             var sX = shade.offsetX, sY = shade.offsetY;
             var left = sX - hX, top = sY - hY;
-            if (top < 0) {
-                top = 0;
+            if (top <= win.config.toTop) {
+                top = 50;
             }
             if (left < 0) {
                 left = 0;
