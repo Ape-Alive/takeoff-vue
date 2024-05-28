@@ -77,7 +77,7 @@ var WinEl = (function () {
             left = (parentElement.offsetWidth - Number(width)) / 2;
         }
         this.box.style.top = "".concat(top <= config.toTop ? config.toTop : top, "px");
-        // this.box.style.left = "".concat(left < 0 ? 0 : left, "px");
+        this.box.style.left = "".concat(left < 0 ? left : left, "px");
     };
     WinEl.prototype.setContent = function (config) {
         if (config.component) {
