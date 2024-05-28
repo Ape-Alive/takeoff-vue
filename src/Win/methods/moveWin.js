@@ -26,7 +26,7 @@ export default function (win, status, winEl, endCallback) {
             // if (left < 0) {
             //     left = 0;
             // }
-            // winEl.box.style["left"] = "".concat(left, "px");
+            winEl.box.style["left"] = "".concat(left, "px");
             winEl.box.style["top"] = "".concat(top, "px");
         };
     });
