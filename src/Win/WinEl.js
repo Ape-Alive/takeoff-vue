@@ -46,6 +46,9 @@ var WinEl = (function () {
         if (config.height) {
             this.box.style.height = config.height;
         }
+        if (config.startExist) {
+            this.box.style.display = "none"
+        }
     };
     WinEl.prototype.__init__correlation = function () {
         this.title.appendChild(this.icon);
@@ -107,6 +110,8 @@ var WinEl = (function () {
         this.box.classList.add("initial");
         this.box.classList.remove("mini");
         this.box.classList.remove("max");
+        this.box.style.display = "block"
+
         if (upStatus === "mini") {
             this.minimize.innerHTML = miniSvg;
         }
@@ -118,6 +123,8 @@ var WinEl = (function () {
         this.box.classList.add("max");
         this.box.classList.remove("initial");
         this.box.classList.remove("mini");
+        this.box.style.display = "block"
+
         this.maximize.innerHTML = unmaxSvg;
         if (upStatus === "mini") {
             this.minimize.innerHTML = miniSvg;
@@ -127,6 +134,8 @@ var WinEl = (function () {
         this.box.classList.add("mini");
         this.box.classList.remove("initial");
         this.box.classList.remove("max");
+        this.box.style.display = "none"
+
         this.minimize.innerHTML = maxSvg;
     };
     return WinEl;

@@ -11,20 +11,21 @@ export var defaultConfig = {
     maxBtn: false,
     resize: false,
     icon: chromeSvg,
+    startExist: false,
     url: "http://www.bauble.vip",
     sandbox: []
 };
 var Win = (function () {
     function Win(config) {
         this.config = defaultConfig;
-        this.status = "initial";
         this.zIndex = Win.zIndex;
         this.children = {};
-        this.upStatus = "initial";
         this.callbacks = {};
         Win.zIndex += 1;
         this.__config = config || defaultConfig;
         var component = this.__config.component;
+        this.upStatus = "initial"
+        this.status = this.__config.startExist ? "mini" : "initial"
         this.id = this.__config.id ? this.__config.id : component && component.id ? component.id : Win.createId();
         if (Win.WinIdMap[this.id]) {
             var errMsg = "相同ID窗口已存在！无法继续创建";
@@ -145,8 +146,10 @@ var Win = (function () {
             }
         }
         var parentElement = this.elements.box.parentElement;
-        if (parentElement) {
+        if (parentElement && !this.__config.startExist) {
             parentElement.removeChild(this.elements.box);
+        } else {
+            this.setMini()
         }
         delete Win.WinIdMap[this.id];
         if (this.__config.parentId) {
@@ -229,10 +232,16 @@ var Win = (function () {
     };
     Win.prototype.close = function () {
         var _this = this;
-        this.__status = "close";
+        if (_this.__config.startExist) {
+            _this.__status = "mini";
+        } else {
+            _this.__status = "close";
+        }
         requestAnimationFrame(function () {
-            if (_this.callbacks.close) {
+            if (_this.callbacks.close && !_this.__config.startExist) {
                 _this.callbacks.close();
+            } else if (_this.callbacks.shut && _this.__config.startExist) {
+                _this.callbacks.shut();
             }
         });
     };
@@ -263,6 +272,12 @@ var Win = (function () {
     Win.prototype.onclose = function (fn) {
         if (typeof fn === "function") {
             this.callbacks.close = fn;
+        }
+        return this;
+    };
+    Win.prototype.onshut = function (fn) {
+        if (typeof fn === "function") {
+            this.callbacks.shut = fn;
         }
         return this;
     };
