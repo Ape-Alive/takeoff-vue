@@ -42,6 +42,9 @@ body .new-windows-box .new-windows-header .new-windows-title .new-windows-icon {
   height: 18px;
   margin-right: 5px;
   overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 body .new-windows-box .new-windows-header .new-windows-title .new-windows-icon svg,
 body .new-windows-box .new-windows-header .new-windows-title .new-windows-icon img {
@@ -49,6 +52,7 @@ body .new-windows-box .new-windows-header .new-windows-title .new-windows-icon i
   height: 100%;
   fill: currentColor;
   overflow: hidden;
+  object-fit: cover;
 }
 body .new-windows-box .new-windows-header .new-windows-title .new-windows-name {
   height: 18px;
