@@ -107,6 +107,7 @@ var Win = (function () {
         this.elements.setPosition(this.__config);
         this.elements.setContent(this.__config);
         Win.WinIdMap[this.id] = this;
+        this.elements.setProps(this.__config)
         requestAnimationFrame(function () {
             if (_this.callbacks.mounted) {
                 _this.callbacks.mounted(_this);
