@@ -83,11 +83,13 @@ var WinEl = (function () {
         this.box.style.left = "".concat(left < 0 ? left : left, "px");
     };
     WinEl.prototype.setProps = function (config) {
-        const selectId = '#' + config.props.iframeId
-        const iframeDom = this.box.querySelector(selectId)
-        iframeDom.contentWindow.props = config.props.data;
-        iframeDom.contentWindow.postMessage(config.props.data, '*')
-
+        if (config.props.iframeId) {
+            const selectId = '#' + config.props.iframeId
+            const iframeDom = this.box.querySelector(selectId)
+            iframeDom.contentWindow.props = config.props.data;
+            iframeDom.contentWindow.postMessage(config.props.data, '*')
+            localStorage.setItem(`${config.props.iframeId}`, JSON.stringify(config.props.data))
+        }
     }
     WinEl.prototype.setContent = function (config) {
         if (config.component) {
@@ -109,8 +111,8 @@ var WinEl = (function () {
                 var sandbox = config.sandbox.join(" ");
                 iframe.setAttribute("sandbox", sandbox);
             }
-            if (config.iframeId) {
-                iframe.setAttribute("id", config.iframeId);
+            if (config.props.iframeId) {
+                iframe.setAttribute("id", config.props.iframeId);
             }
             iframe.setAttribute("src", config.url);
             this.content.appendChild(iframe);

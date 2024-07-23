@@ -246,6 +246,11 @@ var Win = (function () {
             }
         });
     };
+    Win.prototype.changeProps = function (props) {
+        this.__config.props.data = props
+        this.elements.setProps(this.__config)
+        return this;
+    };
     Win.prototype.onmounted = function (fn) {
         if (typeof fn === "function") {
             this.callbacks.mounted = fn;
