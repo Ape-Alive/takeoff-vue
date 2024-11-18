@@ -15,8 +15,17 @@ var WinEl = (function () {
         this.close = createElement(["new-windows-btn", "new-windows-close"]);
         this.content = createElement("new-windows-content");
         this.miniEl = createElement("new-windows-mini-list-box");
+
+        this.boxMask = createElement("new-windows-box-mask");
+
+        if (config.resize) {
+            this.leftBorder = createElement("new-windows-left-border");
+            this.rightBorder = createElement("new-windows-rigth-border");
+            this.topBorder = createElement("new-windows-top-border");
+            this.bottomBorder = createElement("new-windows-bottom-border");
+        }
         this.__init__attribute__content(config);
-        this.__init__correlation();
+        this.__init__correlation(config);
     }
     WinEl.prototype.__init__attribute__content = function (config) {
         this.minimize.innerHTML = miniSvg;
@@ -37,9 +46,9 @@ var WinEl = (function () {
         if (!config.maxBtn) {
             this.maximize.style.display = "none";
         }
-        if (config.resize) {
-            this.box.style.resize = "both";
-        }
+        // if (config.resize) {
+        //     this.box.style.resize = "both";
+        // }
         if (config.width) {
             this.box.style.width = config.width;
         }
@@ -50,7 +59,41 @@ var WinEl = (function () {
             this.box.style.display = "none"
         }
     };
-    WinEl.prototype.__init__correlation = function () {
+
+    WinEl.prototype.__init__zindex_top = function (config) {
+        const elements = document.querySelectorAll('div.new-windows-box');
+        let maxZIndex = -Infinity;
+        let maxElement = null;
+        elements.forEach((element, index) => {
+            const zIndex = parseInt(window.getComputedStyle(element).zIndex, 10);
+            if (!isNaN(zIndex) && zIndex > maxZIndex) {
+                maxZIndex = zIndex;
+                maxElement = element;
+            }
+        });
+        if (maxElement) {
+            const maskElement = maxElement.querySelector('.new-windows-box-mask');
+            if (maskElement) {
+                maskElement.style.display = 'none';
+            } else {
+                console.log('No child with class new-windows-box-mask found.');
+            }
+        } else {
+            console.log('No valid z-index found.');
+        }
+        elements.forEach((element ,index)=> {
+            if (element !== maxElement) {
+                const maskElement = element.querySelector('.new-windows-box-mask');
+                if (maskElement) {
+                    maskElement.style.display = 'block';
+                } else {
+                    console.log('No child with class new-windows-box-mask found.');
+                }
+            }
+        });
+    };
+
+    WinEl.prototype.__init__correlation = function (config) {
         this.title.appendChild(this.icon);
         this.title.appendChild(this.name);
         this.btnbox.appendChild(this.minimize);
@@ -62,6 +105,16 @@ var WinEl = (function () {
         this.box.appendChild(this.header);
         this.content.appendChild(this.miniEl);
         this.box.appendChild(this.content);
+        this.box.appendChild(this.boxMask);
+        if (config.resize) {
+            this.box.appendChild(this.leftBorder)
+            this.box.appendChild(this.rightBorder)
+            this.box.appendChild(this.topBorder)
+            this.box.appendChild(this.bottomBorder)
+        }
+        setTimeout(() => {
+            this.__init__zindex_top(config)
+        }, 0)
     };
     WinEl.prototype.setPosition = function (config) {
         var _a, _b;

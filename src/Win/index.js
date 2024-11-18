@@ -84,6 +84,9 @@ var Win = (function () {
         set: function (v) {
             this.elements.box.style.zIndex = String(v);
             this.zIndex = v;
+            setTimeout(() => {
+                this.elements.__init__zindex_top()
+            }, 10)
         },
         enumerable: false,
         configurable: true

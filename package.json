@@ -1,6 +1,6 @@
 {
   "name": "takeoff-vue",
-  "version": "1.4.3",
+  "version": "1.4.6",
   "description": "The UI component of Vue2",
   "main": "src/main",
   "scripts": {

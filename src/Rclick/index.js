@@ -72,8 +72,6 @@ var Menu = (function () {
             menu.addEventListener("click", function () {
                 item.method(_this.el);
             });
-            var leftMenuBox = createElement("window-left-menus-item-box");
-            var rightMenuBox = createElement("window-right-menus-item-box");
             var icon = createElement("window-right-menus-item-icon");
             if (typeof item.icon === "string") {
                 icon.innerHTML = item.icon;
@@ -81,15 +79,10 @@ var Menu = (function () {
             else if (item.icon && item.icon.nodeName) {
                 icon.appendChild(item.icon);
             }
-            if (typeof item.shortcut === "string" && item.shortcut) {
-                rightMenuBox.innerText = item.shortcut
-            }
             var name = createElement("window-right-menus-item-name");
             name.innerText = item.name;
-            leftMenuBox.appendChild(icon)
-            leftMenuBox.appendChild(name)
-            menu.appendChild(leftMenuBox);
-            menu.appendChild(rightMenuBox);
+            menu.appendChild(icon);
+            menu.appendChild(name);
             menus.push(menu);
         });
         menus.forEach(function (menu) {
@@ -155,7 +148,6 @@ var defaultMenus = [
     {
         id: 0,
         icon: dirSvg,
-        shortcut: 'Ctrl+D',
         name: "新建文件夹",
         method: function () {
             console.log("你点击了【新建文件夹】");

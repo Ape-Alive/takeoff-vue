@@ -90,6 +90,47 @@ body .new-windows-box .new-windows-header .new-windows-btnbox .new-windows-close
   background-color: rgba(238, 0, 0, 0.8);
   color: #fff;
 }
+body .new-windows-box .new-windows-box-mask {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  border: 1px solid transparent;
+  top: 0px;
+}
+body .new-windows-box .new-windows-left-border {
+  position: absolute;
+  border: 5px solid transparent;
+  height: 100%;
+  left: -5px;
+  top: 0px;
+  user-select: none;
+  cursor: e-resize;
+}
+body .new-windows-box .new-windows-rigth-border {
+  position: absolute;
+  border: 5px solid transparent;
+  height: 100%;
+  right: -5px;
+  top: 0px;
+  user-select: none;
+  cursor: e-resize;
+}
+body .new-windows-box .new-windows-top-border {
+  position: absolute;
+  border: 5px solid transparent;
+  width: 100%;
+  top: -5px;
+  user-select: none;
+  cursor: n-resize;
+}
+body .new-windows-box .new-windows-bottom-border {
+  position: absolute;
+  border: 5px solid transparent;
+  width: 100%;
+  bottom: -5px;
+  user-select: none;
+  cursor: n-resize;
+}
 body .new-windows-box .new-windows-content {
   position: relative;
   height: calc(100% - 32px);
