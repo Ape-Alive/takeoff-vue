@@ -180,6 +180,15 @@ var Win = (function () {
             parentNode.appendChild(this.elements.box);
         }
     };
+    Win.prototype.handleDrop = function (data) {
+        var _this = this;
+        requestAnimationFrame(function () {
+            if (_this.callbacks.dropfn) {
+                _this.callbacks.dropfn(_this, data);
+            }
+        });
+        return this;
+    };
     Win.prototype.setTop = function () {
         var _this = this;
         requestAnimationFrame(function () {
@@ -257,6 +266,12 @@ var Win = (function () {
     Win.prototype.onmounted = function (fn) {
         if (typeof fn === "function") {
             this.callbacks.mounted = fn;
+        }
+        return this;
+    };
+    Win.prototype.ondrop = function (fn) {
+        if (typeof fn === "function") {
+            this.callbacks.dropfn = fn;
         }
         return this;
     };
