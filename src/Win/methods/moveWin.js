@@ -43,8 +43,23 @@ export default function (win, status, winEl, endCallback) {
         event.preventDefault(); // 阻止默认行为，允许放置
         winEl.boxMask.style.backgroundColor = '#ffffffc0'; // 提示用户可以放置
         winEl.boxMaskWrapper.style.display = 'block';
+        var ObjData;
         const data = localStorage.getItem('currentDrapData');
-        win.handledragover(data)
+        const fileData = event.dataTransfer.files
+        if (data) {
+            ObjData = JSON.parse(data)
+            ObjData.type = 'innerSystem'
+            ObjData.target = win.iframeInfo
+        } else {
+            const filedata = {
+                type: 'outerSystem',
+                source: 'System',
+                target: win.iframeInfo,
+                data: fileData ? fileData : 'empty'
+            }
+            ObjData = filedata
+        }
+        win.handledragover(ObjData)
     });
     winEl.boxMask.addEventListener('drop', (event) => {
         event.preventDefault();
@@ -64,7 +79,9 @@ export default function (win, status, winEl, endCallback) {
         } else {
             const filedata = {
                 type: 'outerSystem',
-                data: fileData
+                data: fileData,
+                source: 'System',
+                target: win.iframeInfo,
             }
             ObjData = filedata
         }
