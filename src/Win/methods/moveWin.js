@@ -30,12 +30,47 @@ export default function (win, status, winEl, endCallback) {
             winEl.box.style["top"] = "".concat(top, "px");
         };
     });
-    // winEl.box.addEventListener('click', function () {
-    //     win.setTop();
-    // })
     winEl.boxMask.addEventListener('click', function () {
+        win.dragSingle = true;
+        winEl.boxMask.style.backgroundColor = 'transparent';
         win.setTop();
-    })
+    });
+    winEl.boxMask.addEventListener('dragleave', (event) => {
+        winEl.boxMask.style.backgroundColor = 'transparent';
+        winEl.boxMaskWrapper.style.display = 'none';
+    });
+    winEl.boxMask.addEventListener('dragover', (event) => {
+        event.preventDefault(); // 阻止默认行为，允许放置
+        winEl.boxMask.style.backgroundColor = '#ffffffc0'; // 提示用户可以放置
+        winEl.boxMaskWrapper.style.display = 'block';
+        const data = localStorage.getItem('currentDrapData');
+        win.handledragover(data)
+    });
+    winEl.boxMask.addEventListener('drop', (event) => {
+        event.preventDefault();
+        win.dragSingle = true;
+        setTimeout(() => {
+            winEl.boxMask.style.backgroundColor = 'transparent';
+            winEl.boxMaskWrapper.style.display = 'none';
+        }, 0)
+        var ObjData;
+        // 获取拖拽的数据
+        const data = event.dataTransfer.getData('text');
+        const fileData = event.dataTransfer.files
+        if (data) {
+            ObjData = JSON.parse(data)
+            ObjData.type = 'innerSystem'
+            ObjData.target = win.iframeInfo
+        } else {
+            const filedata = {
+                type: 'outerSystem',
+                data: fileData
+            }
+            ObjData = filedata
+        }
+        localStorage.removeItem('currentDrapData')
+        win.handleDrop(ObjData);
+    });
     if (win.__config.resize) {
         const leftBorderMousedown = function (mousedown) {
             win.setTop();

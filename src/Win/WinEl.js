@@ -17,6 +17,9 @@ var WinEl = (function () {
         this.miniEl = createElement("new-windows-mini-list-box");
 
         this.boxMask = createElement("new-windows-box-mask");
+        this.boxMaskWrapper = createElement("new-windows-box-mask-wrapper");
+        this.boxMaskIcon = createElement("new-windows-box-mask-icon");
+        this.boxMaskText = createElement("new-windows-box-mask-text");
 
         if (config.resize) {
             this.leftBorder = createElement("new-windows-left-border");
@@ -81,11 +84,15 @@ var WinEl = (function () {
         } else {
             console.log('No valid z-index found.');
         }
-        elements.forEach((element ,index)=> {
+        elements.forEach((element, index) => {
             if (element !== maxElement) {
                 const maskElement = element.querySelector('.new-windows-box-mask');
+                const maskWrapperElement = element.querySelector('.new-windows-box-mask-wrapper');
                 if (maskElement) {
                     maskElement.style.display = 'block';
+                    if (maskWrapperElement) {
+                        maskElement.removeChild(maskWrapperElement);
+                    }
                 } else {
                     console.log('No child with class new-windows-box-mask found.');
                 }
@@ -105,7 +112,7 @@ var WinEl = (function () {
         this.box.appendChild(this.header);
         this.content.appendChild(this.miniEl);
         this.box.appendChild(this.content);
-        this.box.appendChild(this.boxMask);
+        this.content.appendChild(this.boxMask);
         if (config.resize) {
             this.box.appendChild(this.leftBorder)
             this.box.appendChild(this.rightBorder)
@@ -115,6 +122,26 @@ var WinEl = (function () {
         setTimeout(() => {
             this.__init__zindex_top(config)
         }, 0)
+    };
+    WinEl.prototype.__set__drap_option = function (dragOption) {
+        if (this.boxMaskIcon.firstChild) {
+            this.boxMaskIcon.firstChild.remove();
+        }
+        if (typeof dragOption.dragIcon === "string") {
+            this.boxMaskIcon.innerHTML = dragOption.dragIcon;
+        }
+        else if (dragOption.dragIcon && dragOption.dragIcon.nodeName) {
+            this.boxMaskIcon.appendChild(dragOption.dragIcon);
+        }
+        if (typeof dragOption.dragText === "string") {
+            this.boxMaskText.innerHTML = dragOption.dragText;
+        }
+        else if (dragOption.dragText && dragOption.dragText.nodeName) {
+            this.boxMaskText.appendChild(dragOption.dragText);
+        }
+        this.boxMask.appendChild(this.boxMaskWrapper);
+        this.boxMaskWrapper.appendChild(this.boxMaskIcon);
+        this.boxMaskWrapper.appendChild(this.boxMaskText);
     };
     WinEl.prototype.setPosition = function (config) {
         var _a, _b;
@@ -143,7 +170,14 @@ var WinEl = (function () {
             iframeDom.contentWindow.postMessage(config.props.data, '*')
             localStorage.setItem(`${config.props.iframeId}`, JSON.stringify(config.props.data))
         }
-    }
+    };
+    WinEl.prototype.setParentInstance = function (curInstance, config) {
+        if (config.props.iframeId) {
+            const selectId = '#' + config.props.iframeId
+            const iframeDom = this.box.querySelector(selectId)
+            iframeDom.contentWindow.curInstance = curInstance;
+        }
+    };
     WinEl.prototype.setContent = function (config) {
         if (config.component) {
             var props = config.props ? config.props : {};

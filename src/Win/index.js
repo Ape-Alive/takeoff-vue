@@ -13,7 +13,7 @@ export var defaultConfig = {
     icon: chromeSvg,
     startExist: false,
     url: "http://www.bauble.vip",
-    sandbox: []
+    sandbox: [],
 };
 var Win = (function () {
     function Win(config) {
@@ -21,6 +21,12 @@ var Win = (function () {
         this.zIndex = Win.zIndex;
         this.children = {};
         this.callbacks = {};
+        this.iframeInfo = {}
+        this.dragSingle = true
+        this.dragOption = {
+            dragIcon: '',
+            dragText: ''
+        }
         Win.zIndex += 1;
         this.__config = config || defaultConfig;
         var component = this.__config.component;
@@ -41,6 +47,21 @@ var Win = (function () {
             Win.baseMiniEl = createBaseMiniEl();
         }
     }
+
+    Object.defineProperty(Win.prototype, "_dragOption", {
+        get: function () {
+            return this.dragOption;
+        },
+        set: function (v) {
+            this.dragOption = v;
+            setTimeout(() => {
+                this.elements.__set__drap_option(this.dragOption)
+            }, 0)
+        },
+        enumerable: false,
+        configurable: true
+    });
+
     Object.defineProperty(Win.prototype, "__config", {
         get: function () {
             return this.config;
@@ -111,6 +132,7 @@ var Win = (function () {
         this.elements.setContent(this.__config);
         Win.WinIdMap[this.id] = this;
         this.elements.setProps(this.__config)
+        this.elements.setParentInstance(_this, this.__config)
         requestAnimationFrame(function () {
             if (_this.callbacks.mounted) {
                 _this.callbacks.mounted(_this);
@@ -180,15 +202,6 @@ var Win = (function () {
             parentNode.appendChild(this.elements.box);
         }
     };
-    Win.prototype.handleDrop = function (data) {
-        var _this = this;
-        requestAnimationFrame(function () {
-            if (_this.callbacks.dropfn) {
-                _this.callbacks.dropfn(_this, data);
-            }
-        });
-        return this;
-    };
     Win.prototype.setTop = function () {
         var _this = this;
         requestAnimationFrame(function () {
@@ -200,6 +213,16 @@ var Win = (function () {
                 }
             }
         });
+    };
+    Win.prototype.setIframeInfo = function (iframeInfo) {
+        var _this = this;
+        _this.iframeInfo = iframeInfo;
+        return this;
+    };
+    Win.prototype.setDrapOption = function (dragOption) {
+        var _this = this;
+        _this._dragOption = dragOption;
+        return this;
     };
     Win.prototype.setMax = function () {
         var _this = this;
@@ -227,6 +250,25 @@ var Win = (function () {
         requestAnimationFrame(function () {
             if (_this.callbacks.mini) {
                 _this.callbacks.mini(_this);
+            }
+        });
+        return this;
+    };
+    Win.prototype.handleDrop = function (data) {
+        var _this = this;
+        requestAnimationFrame(function () {
+            if (_this.callbacks.dropfn) {
+                _this.callbacks.dropfn(_this, data);
+            }
+        });
+        return this;
+    };
+    Win.prototype.handledragover = function (data) {
+        var _this = this;
+        requestAnimationFrame(function () {
+            if (_this.callbacks.dragoverfn && _this.dragSingle) {
+                _this.dragSingle = false
+                _this.callbacks.dragoverfn(_this, data);
             }
         });
         return this;
@@ -266,6 +308,12 @@ var Win = (function () {
     Win.prototype.onmounted = function (fn) {
         if (typeof fn === "function") {
             this.callbacks.mounted = fn;
+        }
+        return this;
+    };
+    Win.prototype.ondragover = function (fn) {
+        if (typeof fn === "function") {
+            this.callbacks.dragoverfn = fn;
         }
         return this;
     };
