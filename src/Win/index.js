@@ -16,6 +16,8 @@ export var defaultConfig = {
     sandbox: [],
 };
 var Win = (function () {
+    const loadingIcon = createElement({ name: 'img' })
+    loadingIcon.setAttribute('src', require('../assets/loading.png'))
     function Win(config) {
         this.config = defaultConfig;
         this.zIndex = Win.zIndex;
@@ -28,6 +30,10 @@ var Win = (function () {
             dragText: ''
         }
         Win.zIndex += 1;
+        if (!config.loadingIcon) {
+            config.loadingIcon = loadingIcon
+        }
+        config.isLoading = !!config.isLoading
         this.__config = config || defaultConfig;
         var component = this.__config.component;
         this.upStatus = "initial"
@@ -304,6 +310,11 @@ var Win = (function () {
         this.__config.props.data = props
         this.elements.setProps(this.__config)
         return this;
+    };
+    Win.prototype.changeLoading = function (loading) {
+        this.__config.isLoading = loading
+        this.elements.setLoading(loading)
+        return this
     };
     Win.prototype.onmounted = function (fn) {
         if (typeof fn === "function") {

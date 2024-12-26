@@ -21,6 +21,7 @@ var WinEl = (function () {
         this.boxMaskIcon = createElement("new-windows-box-mask-icon");
         this.boxMaskText = createElement("new-windows-box-mask-text");
 
+        this.boxLoading = createElement('new-windows-box-loading');
         if (config.resize) {
             this.leftBorder = createElement("new-windows-left-border");
             this.rightBorder = createElement("new-windows-rigth-border");
@@ -52,6 +53,11 @@ var WinEl = (function () {
         // if (config.resize) {
         //     this.box.style.resize = "both";
         // }
+        this.content.appendChild(this.boxLoading);
+        this.boxLoading.appendChild(config.loadingIcon)
+
+        this.setLoading(config.isLoading)
+
         if (config.width) {
             this.box.style.width = config.width;
         }
@@ -169,6 +175,13 @@ var WinEl = (function () {
             iframeDom.contentWindow.props = config.props.data;
             iframeDom.contentWindow.postMessage(config.props.data, '*')
             localStorage.setItem(`${config.props.iframeId}`, JSON.stringify(config.props.data))
+        }
+    };
+    WinEl.prototype.setLoading = function (loading) {
+        if (loading) {
+            this.boxLoading.style.display = "flex"
+        } else {
+            this.boxLoading.style.display = "none"
         }
     };
     WinEl.prototype.setParentInstance = function (curInstance, config) {
