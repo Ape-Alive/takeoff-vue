@@ -102,8 +102,12 @@ export default function (win, status, winEl, endCallback) {
             window.addEventListener('mouseup', mouseup);
             function mousemove(e) {
                 const rect = winEl.box.getBoundingClientRect();
-                winEl.box.style.width = rect.width + (prevX - e.clientX) + 'px';
-                winEl.box.style.left = rect.left - (prevX - e.clientX) + 'px';
+                // winEl.box.style.width = rect.width + (prevX - e.clientX) + 'px';
+                // winEl.box.style.left = rect.left - (prevX - e.clientX) + 'px';
+                var temporaryWidth = rect.width - (prevX - e.clientX);
+                if ((win.config.miniWidth || 0) <= temporaryWidth) {
+                    winEl.box.style.width = temporaryWidth + 'px'
+                }
                 windowDoms.forEach(dom => {
                     dom.style.pointerEvents = 'none';
                 });
@@ -132,7 +136,10 @@ export default function (win, status, winEl, endCallback) {
             window.addEventListener('mouseup', mouseup);
             function mousemove(e) {
                 const rect = winEl.box.getBoundingClientRect();
-                winEl.box.style.width = rect.width - (prevX - e.clientX) + 'px';
+                var temporaryWidth = rect.width - (prevX - e.clientX);
+                if ((win.config.miniWidth || 0) <= temporaryWidth) {
+                    winEl.box.style.width = temporaryWidth + 'px'
+                }
                 windowDoms.forEach(dom => {
                     dom.style.pointerEvents = 'none';
                 });
@@ -161,8 +168,14 @@ export default function (win, status, winEl, endCallback) {
             window.addEventListener('mouseup', mouseup);
             function mousemove(e) {
                 const rect = winEl.box.getBoundingClientRect();
-                winEl.box.style.height = rect.height + (prevY - e.clientY) + 'px';
-                winEl.box.style.top = rect.top - (prevY - e.clientY) + 'px';
+                var temporaryHeight = rect.height + (prevY - e.clientY);
+                var temporaryTop = rect.top - (prevY - e.clientY);
+                if ((win.config.miniHeight || 0) <= temporaryHeight) {
+                    winEl.box.style.height = temporaryHeight + 'px'
+                }
+                if ((win.config.toTop || 0) <= temporaryTop) {
+                    winEl.box.style.top = temporaryTop + 'px'
+                }
                 windowDoms.forEach(dom => {
                     dom.style.pointerEvents = 'none';
                 });
@@ -191,7 +204,10 @@ export default function (win, status, winEl, endCallback) {
             window.addEventListener('mouseup', mouseup);
             function mousemove(e) {
                 const rect = winEl.box.getBoundingClientRect();
-                winEl.box.style.height = rect.height - (prevY - e.clientY) + 'px';
+                var temporaryHeight = rect.height - (prevY - e.clientY);
+                if ((win.config.miniHeight || 0) <= temporaryHeight) {
+                    winEl.box.style.height = temporaryHeight + 'px'
+                }
                 windowDoms.forEach(dom => {
                     dom.style.pointerEvents = 'none';
                 });

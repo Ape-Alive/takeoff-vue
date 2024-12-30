@@ -114,7 +114,7 @@ var Menu = (function () {
                     left = vw - _this.width;
                 }
                 if (vh - top < _this.height) {
-                    top = vh - _this.height;
+                    top = vh - _this.height - 30;
                 }
                 _this.__left = left;
                 _this.__top = top;
