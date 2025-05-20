@@ -57,13 +57,19 @@ var WinEl = (function () {
         this.boxLoading.appendChild(config.loadingIcon)
 
         this.setLoading(config.isLoading)
+        if (window.innerWidth < 1400) {
+            this.box.style.width = '85%';
+            this.box.style.height = '80%';
+        } else {
+            if (config.width) {
+                this.box.style.width = config.width;
+            }
+            if (config.height) {
+                this.box.style.height = config.height;
+            }
+        }
 
-        if (config.width) {
-            this.box.style.width = config.width;
-        }
-        if (config.height) {
-            this.box.style.height = config.height;
-        }
+
         if (config.startExist) {
             this.box.style.display = "none"
         }
@@ -157,13 +163,25 @@ var WinEl = (function () {
         var parentElement = this.box.parentElement;
         if (parentElement === document.body) {
             this.box.style["position"] = "fixed";
-            top = (window.innerHeight - Number(height)) / 2;
-            left = (window.innerWidth - Number(width)) / 2;
+            if (window.innerWidth < 1400) {
+                top = (window.innerHeight - window.innerHeight * 0.8) / 2 + 10;
+                left = (window.innerWidth - window.innerWidth * 0.85) / 2;
+            } else {
+                top = (window.innerHeight - Number(height)) / 2;
+                left = (window.innerWidth - Number(width)) / 2;
+            }
+
         }
         else if (parentElement) {
             this.box.style["position"] = "absolute";
-            top = (parentElement.offsetHeight - Number(height)) / 2;
-            left = (parentElement.offsetWidth - Number(width)) / 2;
+            if (window.innerWidth < 1400) {
+                top = (window.innerHeight - window.innerHeight * 0.8) / 2 + 10;
+                left = (window.innerWidth - window.innerWidth * 0.85) / 2;
+            } else {
+                top = (parentElement.offsetHeight - Number(height)) / 2;
+                left = (parentElement.offsetWidth - Number(width)) / 2;
+            }
+
         }
         this.box.style.top = "".concat(top <= config.toTop ? config.toTop : top, "px");
         this.box.style.left = "".concat(left < 0 ? left : left, "px");
